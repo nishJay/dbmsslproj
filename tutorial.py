@@ -58,7 +58,7 @@ frame = tk.Frame(window)
 frame.pack()
 
 # Saving User Info
-user_info_frame =tk.LabelFrame(frame, text="User Information")
+user_info_frame =tk.LabelFrame(frame, text=" User Information")
 user_info_frame.grid(row= 0, column=0, padx=20, pady=10)
 
 first_name_label = tk.Label(user_info_frame, text="First Name")
