@@ -1,38 +1,52 @@
 from tkinter import *
+import sys
 import sqlite3
 
 # Create the main window
 window = Tk()
 window.title("Recipe Suggestor")
+window.geometry("400x400")
 frame = Frame(window)
 frame.pack()
 
 # Create an IntVar for each checkbox
 
-checkbox1_var = IntVar()
 
 
 # Create the checkboxes
-choices = ["Rava Dosa"]
+choices = ["Rava Dosa","Masala Dosa"]
 checkbox = []
 state = []
 selected = []
+results = []
 for i in range(len(choices)):
     checkbox.append(IntVar())
     Checkbutton(window,text = choices[i], variable = checkbox[i]).pack()
-    state.append(checkbox[i].get())
     
 
-def enter_data():
+
+def enter_data():    
     for i in range(len(choices)):
-        if(state[i]):
+        state.append(checkbox[i].get())
+        if(state[i] == 1):
             selected.append(choices[i])
-        print(state)
-        print(selected)
+    print(selected)
+    for i in selected:
+        print(i)
+        cursor.execute("SELECT * FROM Dish WHERE Dish_name = '{i}'")
+        results = cursor.fetchall()
+        print(results)
+    for result in results:
+        label = Label(text=result)
+        label.pack()
+    conn.commit()
+    conn.close()
+    
+        
            
         
 
-button = Button(frame, text="Submit", command= enter_data())
+button = Button(frame, text="Submit", command= enter_data)
 button.grid(row=3, column=0, sticky="news", padx=20, pady=10)
 
 
@@ -58,23 +72,16 @@ cursor = conn.cursor()
 for i in table_create_query:
     conn.execute(i)
 
-#conn.execute("INSERT INTO Dish VALUES (?, ?,?)", ("D2", "Masala Dosa","Masala Dosa Recipe"))
-
-
-
-for i in selected:
-    cursor.execute("SELECT * FROM Dish WHERE Dish_name = ?",(i))
-results = cursor.fetchall()
-
-for result in results:
-    label = Label(text=result)
-    label.pack()
+#conn.execute("INSERT INTO Dish VALUES (?, ?,?)", ("D1","Masala Dosa","Batter"))
 
 
 
 
-conn.commit()
-conn.close()
+
+
+
+
+
 
 # Start the main loop
 window.mainloop()
